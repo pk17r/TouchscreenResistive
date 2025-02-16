@@ -1,0 +1,16 @@
+##########################################
+# Syntax Coloring Map For
+##########################################
+# TouchscreenResistive Class
+##########################################
+
+TouchscreenResistive	KEYWORD1
+
+##########################################
+# Methods and Functions 
+##########################################	
+
+setAdcResolution	KEYWORD2
+getPoint	KEYWORD2
+touched	KEYWORD2
+setRotation	KEYWORD2
