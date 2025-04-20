@@ -41,6 +41,8 @@ void TouchscreenResistive::setAdcResolutionAndThreshold(uint8_t adc_resolution, 
 
 TsPoint TouchscreenResistive::getPoint()
 {
+  const int kMaxRunCounts = 4;
+
   // x measurement
 
   pinMode(_xp, INPUT);
@@ -53,7 +55,15 @@ TsPoint TouchscreenResistive::getPoint()
   delayMicroseconds(10);
   int16_t x1 = analogRead(_xm);
   delayMicroseconds(10);
-  int16_t x = (analogRead(_xm) + x1) / 2;
+  int16_t x2 = analogRead(_xm);
+  int run_counts = 0;
+  while(abs(x2 - x1) > 10 && run_counts < kMaxRunCounts) {
+    run_counts++;
+    x1 = x2;
+    delayMicroseconds(10);
+    x2 = analogRead(_xm);
+  }
+  int16_t x = (x1 + x2) / 2;
 
   // y measurement
 
@@ -67,7 +77,15 @@ TsPoint TouchscreenResistive::getPoint()
   delayMicroseconds(10);
 	int16_t y1 = analogRead(_yp);
   delayMicroseconds(10);
-  int16_t y = (analogRead(_yp) + y1) / 2;
+  int16_t y2 = analogRead(_yp);
+  run_counts = 0;
+  while(abs(y2 - y1) > 10 && run_counts < kMaxRunCounts) {
+    run_counts++;
+    y1 = y2;
+    delayMicroseconds(10);
+    y2 = analogRead(_yp);
+  }
+  int16_t y = (y1 + y2) / 2;
 
   // z measurement
 

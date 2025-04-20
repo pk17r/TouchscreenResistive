@@ -21,12 +21,12 @@
     - 0 & 2 = portrait, 1 & 3 = landscape
 */
 
-#define XM A1  // must be an analog pin
-#define YP A0  // must be an analog pin
-#define XP 9
-#define YM 8
+#define XM 7  // must be an analog pin
+#define YP 3  // must be an analog pin
+#define XP 19
+#define YM 20
 
-const uint16_t xmin = 150, xmax = 930, ymin = 150, ymax = 870;
+const uint16_t xmin = 41, xmax = 881, ymin = 113, ymax = 914;
 const uint16_t width = 320, height = 240;
 
 TouchscreenResistive ts(XP, XM, YP, YM);    // default Rplate = 300 Ohms (5th argument)
@@ -86,8 +86,8 @@ void read_touch_point() {
   Serial.print(", z "); Serial.print(ts_point.z);
 
   if(ts_point.z > 0) {
-    uint16_t tsx = min((uint16_t)map(ts_point.x, xmin, xmax, 0, width - 1), (uint16_t)(width - 1));
-    uint16_t tsy = min((uint16_t)map(ts_point.y, ymin, ymax, 0, height - 1), (uint16_t)(height - 1));
+    uint16_t tsx = max(min((int16_t)map(ts_point.x, xmin, xmax, 0, width - 1), (int16_t)(width - 1)), (int16_t)0);
+    uint16_t tsy = max(min((int16_t)map(ts_point.y, ymin, ymax, 0, height), (int16_t)(height - 1)), (int16_t)0);
     Serial.print("     Touch Pixel ("); Serial.print(tsx);
     Serial.print(","); Serial.print(tsy);
     Serial.println(")");
